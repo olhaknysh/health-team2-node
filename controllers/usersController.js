@@ -29,8 +29,7 @@ const loginUserController = async (req, res) => {
 
 const logoutUserController = async (req, res) => {
   const id = req.user._id;
-  const { token } = req.user;
-  await updateToken(id, token);
+  await updateToken(id, null);
   res.status(statusCode.NO_CONTENT).json({});
 };
 
