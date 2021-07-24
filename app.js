@@ -1,13 +1,24 @@
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
+const express = require('express');
+const logger = require('morgan');
+const cors = require('cors');
+require('dotenv').config();
+const app = express();
+const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+const { errorHandler } = require('./helpers/apiHelpers');
+const { statusCode } = require('./helpers/constants');
+app.use(logger(formatsLogger));
+app.use(cors());
+app.use(express.json());
 
-const app = express()
+const userRouter = require('./routes/usersRouter');
+app.use('/api/users', userRouter);
 
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+app.use((req, res, next) => {
+  res.status(statusCode.NOT_FOUND).json({
+    message: 'Not found',
+  });
+});
 
-app.use(logger(formatsLogger))
-app.use(cors())
-app.use(express.json())
+app.use(errorHandler);
 
-module.exports = app
+module.exports = app;
