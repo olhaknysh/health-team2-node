@@ -15,12 +15,17 @@ const authGuard = async (req, res, next) => {
     const user = jwt.decode(token, SECRET_KEY);
     const userInDb = await getUserById(user.id);
     if (!userInDb || userInDb.token !== token) {
-      return next(new CustomError(statusCode.UNAUTHORIZED, 'invalid token'));
+      return next(
+        new CustomError(
+          statusCode.UNAUTHORIZED,
+          'No user with such token found',
+        ),
+      );
     }
     req.user = userInDb;
     next();
   } catch (error) {
-    next(new CustomError(statusCode.UNAUTHORIZED, 'invalid token'));
+    next(new CustomError(statusCode.UNAUTHORIZED, 'Invalid token'));
   }
 };
 
