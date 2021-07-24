@@ -8,17 +8,19 @@ const authGuard = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) {
-      return next(new CustomError(statusCode.UNAUTHORIZED, 'Not authorized'));
+      return next(
+        new CustomError(statusCode.UNAUTHORIZED, 'Please, provide a token'),
+      );
     }
     const user = jwt.decode(token, SECRET_KEY);
     const userInDb = await getUserById(user.id);
     if (!userInDb || userInDb.token !== token) {
-      return next(new CustomError(statusCode.UNAUTHORIZED, 'Not authorized'));
+      return next(new CustomError(statusCode.UNAUTHORIZED, 'invalid token'));
     }
     req.user = userInDb;
     next();
   } catch (error) {
-    next(new CustomError(statusCode.UNAUTHORIZED, 'Not authorized'));
+    next(new CustomError(statusCode.UNAUTHORIZED, 'invalid token'));
   }
 };
 
