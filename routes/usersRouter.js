@@ -6,7 +6,7 @@ const { authGuard } = require('../middlewares/authMiddleware');
 const {
   validateCreateUser,
   validateLoginUser,
-  validateGetDailyCaloriesParams,
+  validateGetUserInfo,
 } = require('../validation/validationMiddlewares');
 
 const { asyncWrapper } = require('../helpers/apiHelpers');
@@ -25,13 +25,13 @@ router.post('/logout', authGuard, asyncWrapper(logoutUserController));
 
 router.post(
   '/calories',
-  validateGetDailyCaloriesParams,
+  validateGetUserInfo,
   asyncWrapper(dailyCaloriesPublicController),
 );
 
 router.post(
   '/:userId/calories',
-  validateGetDailyCaloriesParams,
+  validateGetUserInfo,
   authGuard,
   asyncWrapper(dailyCaloriesPrivateController),
 );
