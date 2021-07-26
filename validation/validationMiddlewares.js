@@ -6,6 +6,8 @@ const schemaCreateUser = Joi.object({
   name: Joi.string().min(3).max(30).required(),
   login: Joi.string().min(3).max(30).required(),
   password: Joi.string().alphanum().min(6).max(30).required(),
+  dailyCalories: Joi.number().positive().required(),
+  notAllowedProducts: Joi.array().items(Joi.string()).required(),
 });
 
 const schemaLoginUser = Joi.object({
