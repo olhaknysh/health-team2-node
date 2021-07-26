@@ -18,8 +18,13 @@ const usersSchema = new Schema(
       type: String,
       required: [true, 'Password is required'],
     },
-
-    userData: {
+    notAllowedProducts: {
+      type: [String],
+    },
+    dailyCalories: {
+      type: Number,
+    },
+    userInfo: {
       type: Object,
       age: {
         type: Number,

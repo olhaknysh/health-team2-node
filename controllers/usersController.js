@@ -2,11 +2,15 @@ const { statusCode } = require('../helpers/constants');
 
 const { signup, loginUser } = require('../services/authService');
 
-const { updateToken } = require('../services/usersService');
+const { updateToken, addUserInfo } = require('../services/usersService');
+
+const {
+  calcDailyCalories,
+  getNotAllowedCategoriesProducts,
+} = require('../helpers/userHelper');
 
 const signupUserController = async (req, res) => {
-  const { name, login, password } = req.body;
-  const createdUser = await signup(name, login, password);
+  const createdUser = await signup(req.body);
   res.status(statusCode.CREATED).json({
     user: {
       name: createdUser.name,
@@ -21,8 +25,12 @@ const loginUserController = async (req, res) => {
   res.status(statusCode.OK).json({
     token: loggedInUser.token,
     user: {
+      id: loggedInUser._id,
       name: loggedInUser.name,
       login: loggedInUser.login,
+      userInfo: loggedInUser.userInfo,
+      dailyCalories: loggedInUser.dailyCalories,
+      notAllowedProducts: loggedInUser.notAllowedProducts,
     },
   });
 };
@@ -33,8 +41,38 @@ const logoutUserController = async (req, res) => {
   res.status(statusCode.NO_CONTENT).json({});
 };
 
+const dailyCaloriesPublicController = async (req, res) => {
+  const { age, height, currentWeight, desireWeight, groupBlood } = req.body;
+  const dailyCalories = calcDailyCalories(
+    age,
+    height,
+    currentWeight,
+    desireWeight,
+  );
+  const notAllowedCategoriesProducts = await getNotAllowedCategoriesProducts(
+    groupBlood,
+  );
+  res.status(statusCode.OK).json({
+    dailyCalories,
+    notAllowedProducts: notAllowedCategoriesProducts,
+  });
+};
+
+const dailyCaloriesPrivateController = async (req, res) => {
+  const userId = req.user._id;
+  const updatedUser = await addUserInfo(userId, req.body);
+  res.status(statusCode.OK).json({
+    userName: updatedUser.name,
+    userInfo: updatedUser.userInfo,
+    dailyCalories: updatedUser.dailyCalories,
+    notAllowedProducts: updatedUser.notAllowedProducts,
+  });
+};
+
 module.exports = {
   signupUserController,
   loginUserController,
   logoutUserController,
+  dailyCaloriesPublicController,
+  dailyCaloriesPrivateController,
 };

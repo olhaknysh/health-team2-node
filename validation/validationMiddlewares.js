@@ -6,11 +6,21 @@ const schemaCreateUser = Joi.object({
   name: Joi.string().min(3).max(30).required(),
   login: Joi.string().min(3).max(30).required(),
   password: Joi.string().alphanum().min(6).max(30).required(),
+  dailyCalories: Joi.number().positive().required(),
+  notAllowedProducts: Joi.array().items(Joi.string()).required(),
 });
 
 const schemaLoginUser = Joi.object({
   login: Joi.string().min(3).max(30).required(),
   password: Joi.string().alphanum().min(6).max(30).required(),
+});
+
+const schemaGetUserInfo = Joi.object({
+  age: Joi.number().positive().integer().max(99).required(),
+  height: Joi.number().positive().integer().required(),
+  currentWeight: Joi.number().positive().integer().required(),
+  desireWeight: Joi.number().positive().integer().required(),
+  groupBlood: Joi.number().min(1).max(4).integer().positive().required(),
 });
 
 const validate = (shema, body, next) => {
@@ -46,7 +56,15 @@ const validateLoginUser = (req, res, next) => {
   return validate(schemaLoginUser, req.body, next);
 };
 
+const validateGetUserInfo = (req, res, next) => {
+  if (Object.keys(req.body).length === 0) {
+    return next(new CustomError(statusCode.BAD_REQUEST, ' missing fields'));
+  }
+  return validate(schemaGetUserInfo, req.body, next);
+};
+
 module.exports = {
   validateCreateUser,
   validateLoginUser,
+  validateGetUserInfo,
 };
