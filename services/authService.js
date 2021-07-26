@@ -7,12 +7,21 @@ const { CustomError } = require('../helpers/errors');
 
 const { getUserByLogin, createUser, updateToken } = require('./usersService');
 
-const signup = async (name, login, password) => {
+const signup = async body => {
+  const { name, login, password, userInfo, dailyCalories, notAllowedProducts } =
+    body;
   const user = await getUserByLogin(login);
   if (user) {
     throw new CustomError(statusCode.CONFLICT, 'Email in use');
   }
-  const newUser = await createUser(name, login, password);
+  const newUser = await createUser(
+    name,
+    login,
+    password,
+    userInfo,
+    dailyCalories,
+    notAllowedProducts,
+  );
   return newUser;
 };
 
