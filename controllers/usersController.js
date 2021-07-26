@@ -10,8 +10,7 @@ const {
 } = require('../helpers/userHelper');
 
 const signupUserController = async (req, res) => {
-  const { name, login, password } = req.body;
-  const createdUser = await signup(name, login, password);
+  const createdUser = await signup(req.body);
   res.status(statusCode.CREATED).json({
     user: {
       name: createdUser.name,
@@ -29,6 +28,9 @@ const loginUserController = async (req, res) => {
       id: loggedInUser._id,
       name: loggedInUser.name,
       login: loggedInUser.login,
+      userInfo: loggedInUser.userInfo,
+      dailyCalories: loggedInUser.dailyCalories,
+      notAllowedProducts: loggedInUser.notAllowedProducts,
     },
   });
 };
@@ -52,18 +54,18 @@ const dailyCaloriesPublicController = async (req, res) => {
   );
   res.status(statusCode.OK).json({
     dailyCalories,
-    notAllowedCategoriesProducts,
+    notAllowedProducts: notAllowedCategoriesProducts,
   });
 };
 
 const dailyCaloriesPrivateController = async (req, res) => {
   const userId = req.user._id;
-  const createdUser = await addUserInfo(userId, req.body);
+  const updatedUser = await addUserInfo(userId, req.body);
   res.status(statusCode.OK).json({
-    userName: createdUser.name,
-    userInfo: createdUser.userInfo,
-    dailyCalories: createdUser.dailyCalories,
-    notAllowedProducts: createdUser.notAllowedProducts,
+    userName: updatedUser.name,
+    userInfo: updatedUser.userInfo,
+    dailyCalories: updatedUser.dailyCalories,
+    notAllowedProducts: updatedUser.notAllowedProducts,
   });
 };
 
