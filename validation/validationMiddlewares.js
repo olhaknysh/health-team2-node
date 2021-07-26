@@ -23,6 +23,12 @@ const schemaGetUserInfo = Joi.object({
   groupBlood: Joi.number().min(1).max(4).integer().positive().required(),
 });
 
+const schemaQueryProduct = Joi.object({
+  search: Joi.string().required(),
+  limit: Joi.number().integer().min(1).max(50).optional(),
+  page: Joi.number().min(0).integer().optional(),
+});
+
 const validate = (shema, body, next) => {
   const { error } = shema.validate(body);
   if (error) {
@@ -63,8 +69,13 @@ const validateGetUserInfo = (req, res, next) => {
   return validate(schemaGetUserInfo, req.body, next);
 };
 
+const validateQueryProduct = (req, res, next) => {
+  return validate(schemaQueryProduct, req.query, next);
+};
+
 module.exports = {
   validateCreateUser,
   validateLoginUser,
   validateGetUserInfo,
+  validateQueryProduct,
 };
