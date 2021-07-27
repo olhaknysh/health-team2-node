@@ -30,14 +30,9 @@ const schemaQueryProduct = Joi.object({
 });
 
 const schemaCreateUserProduct = Joi.object({
-  totalCalories: Joi.number(),
-  date: Joi.date().format('YYYY-MM-DD').iso().required(),
-  products: Joi.array().items(
-    Joi.object({
-      weight: Joi.number().positive().required(),
-      title: Joi.string(),
-    }),
-  ),
+  date: Joi.string().required(),
+  title: Joi.string(),
+  weight: Joi.number().positive().required(),
 });
 
 const validate = (shema, body, next) => {
