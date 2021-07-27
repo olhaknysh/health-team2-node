@@ -10,7 +10,17 @@ const userProductsSchema = new Schema(
       type: Date,
     },
     products: {
-      type: [Object],
+      type: [
+        {
+          weight: {
+            type: Number,
+            default: 100,
+          },
+          title: {
+            type: String,
+          },
+        },
+      ],
     },
     userID: {
       type: Schema.Types.ObjectId,

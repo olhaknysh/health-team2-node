@@ -29,6 +29,17 @@ const schemaQueryProduct = Joi.object({
   page: Joi.number().min(0).integer().optional(),
 });
 
+const schemaCreateUserProduct = Joi.object({
+  totalCalories: Joi.number(),
+  date: Joi.date().format('YYYY-MM-DD').iso().required(),
+  products: Joi.array().items(
+    Joi.object({
+      weight: Joi.number().positive().required(),
+      title: Joi.string(),
+    }),
+  ),
+});
+
 const validate = (shema, body, next) => {
   const { error } = shema.validate(body);
   if (error) {
@@ -73,9 +84,14 @@ const validateQueryProduct = (req, res, next) => {
   return validate(schemaQueryProduct, req.query, next);
 };
 
+const validateCreateUserProduct = (req, res, next) => {
+  return validate(schemaCreateUserProduct, req.body, next);
+};
+
 module.exports = {
   validateCreateUser,
   validateLoginUser,
   validateGetUserInfo,
   validateQueryProduct,
+  validateCreateUserProduct,
 };
