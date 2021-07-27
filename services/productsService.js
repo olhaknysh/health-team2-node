@@ -20,25 +20,23 @@ const getProductsByQuery = async query => {
   const searchOptions = {
     'title.ru': { $regex: `^${normalizedSearch}`, $options: 'i' },
   };
-  const { docs: findedProducts, totalDocs: total } = await Product.paginate(
+  const { docs: products, totalDocs: total } = await Product.paginate(
     searchOptions,
     {
       limit,
       page,
+      select: '_id title categories calories weight',
     },
   );
 
-  const normalizesProducts = findedProducts.map(
-    ({ title, categories, calories }) => ({ title, categories, calories }),
-  );
-  if (normalizesProducts.length === 0 && page) {
+  if (products.length === 0 && page) {
     throw new CustomError(
       statusCode.UNPROCESSABLE_ENTITY,
       'No allowed products found for this query',
     );
   }
 
-  return { normalizesProducts, total, limit, page: Number(page) };
+  return { products, total, limit, page: Number(page) };
 };
 
 module.exports = {

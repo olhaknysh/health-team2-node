@@ -7,22 +7,22 @@ const userProductsSchema = new Schema(
       type: Number,
     },
     date: {
-      type: Date,
+      type: String,
     },
     products: {
       type: [
         {
+          title: {
+            type: String,
+          },
           weight: {
             type: Number,
             default: 100,
           },
-          title: {
-            type: String,
-          },
         },
       ],
     },
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: 'user',
     },
