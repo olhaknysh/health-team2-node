@@ -29,6 +29,13 @@ router.post(
   asyncWrapper(dailyCaloriesPublicController),
 );
 
+router.post(
+  '/:userId/calories',
+  validateGetUserInfo,
+  authGuard,
+  asyncWrapper(dailyCaloriesPrivateController),
+);
+
 router.patch(
   '/:userId/calories',
   validateGetUserInfo,
