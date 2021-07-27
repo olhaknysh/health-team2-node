@@ -4,7 +4,10 @@ const router = express.Router();
 const { authGuard } = require('../middlewares/authMiddleware');
 const { asyncWrapper } = require('../helpers/apiHelpers');
 
-const { validateQueryProduct } = require('../validation/validationMiddlewares');
+const {
+  validateQueryProduct,
+  validateCreateUserProduct,
+} = require('../validation/validationMiddlewares');
 
 const {
   getProductsByQueryContorller,
@@ -15,5 +18,6 @@ router.get(
   validateQueryProduct,
   asyncWrapper(getProductsByQueryContorller),
 );
+router.post('/', authGuard, validateCreateUserProduct);
 
 module.exports = router;
