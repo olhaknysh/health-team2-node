@@ -11,6 +11,7 @@ const {
 
 const {
   getProductsByQueryContorller,
+  addUserProductController,
 } = require('../controllers/productsController');
 router.get(
   '/',
@@ -18,6 +19,11 @@ router.get(
   validateQueryProduct,
   asyncWrapper(getProductsByQueryContorller),
 );
-router.post('/', authGuard, validateCreateUserProduct);
+router.post(
+  '/',
+  authGuard,
+  validateCreateUserProduct,
+  asyncWrapper(addUserProductController),
+);
 
 module.exports = router;
