@@ -36,6 +36,10 @@ const schemaCreateUserProduct = Joi.object({
   weight: Joi.number().positive().required(),
 });
 
+const schemaGetUserProductsDailyInfo = Joi.object({
+  date: Joi.string().required(),
+});
+
 const validate = (shema, body, next) => {
   const { error } = shema.validate(body);
   if (error) {
@@ -91,6 +95,10 @@ const validateObjectId = (req, res, next) => {
   next();
 };
 
+const validateGetUserProductsDailyInfo = (req, res, next) => {
+  return validate(schemaGetUserProductsDailyInfo, req.params, next);
+};
+
 module.exports = {
   validateCreateUser,
   validateLoginUser,
@@ -98,4 +106,5 @@ module.exports = {
   validateQueryProduct,
   validateCreateUserProduct,
   validateObjectId,
+  validateGetUserProductsDailyInfo,
 };
