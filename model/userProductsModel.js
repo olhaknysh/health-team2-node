@@ -3,9 +3,6 @@ const { Schema } = mongoose;
 
 const userProductsSchema = new Schema(
   {
-    totalCalories: {
-      type: Number,
-    },
     date: {
       type: String,
     },
@@ -19,8 +16,18 @@ const userProductsSchema = new Schema(
             type: Number,
             default: 100,
           },
+          calories: { type: Number },
         },
       ],
+    },
+    totalCalories: {
+      type: Number,
+    },
+    leftCalories: {
+      type: Number,
+    },
+    dailyNormalProcent: {
+      type: Number,
     },
     userId: {
       type: Schema.Types.ObjectId,
