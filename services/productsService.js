@@ -7,6 +7,11 @@ const getAllProducts = async () => {
   return products;
 };
 
+const getProductByTitle = async title => {
+  const product = await Product.findOne({ 'title.ru': title });
+  return product;
+};
+
 const getProductsByQuery = async query => {
   const { search, limit = 5, page = 1 } = query;
   const words = search.split(' ');
@@ -42,4 +47,5 @@ const getProductsByQuery = async query => {
 module.exports = {
   getAllProducts,
   getProductsByQuery,
+  getProductByTitle,
 };
