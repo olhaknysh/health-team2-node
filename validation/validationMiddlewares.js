@@ -1,3 +1,4 @@
+const { Types } = require('mongoose');
 const Joi = require('joi');
 const { statusCode } = require('../helpers/constants');
 const { CustomError } = require('../helpers/errors');
@@ -83,10 +84,18 @@ const validateCreateUserProduct = (req, res, next) => {
   return validate(schemaCreateUserProduct, req.body, next);
 };
 
+const validateObjectId = (req, res, next) => {
+  if (!Types.ObjectId.isValid(req.params.productId)) {
+    return next(new CustomError(statusCode.BAD_REQUEST, 'Invalid id'));
+  }
+  next();
+};
+
 module.exports = {
   validateCreateUser,
   validateLoginUser,
   validateGetUserInfo,
   validateQueryProduct,
   validateCreateUserProduct,
+  validateObjectId,
 };

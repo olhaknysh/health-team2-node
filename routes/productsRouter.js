@@ -7,11 +7,13 @@ const { asyncWrapper } = require('../helpers/apiHelpers');
 const {
   validateQueryProduct,
   validateCreateUserProduct,
+  validateObjectId,
 } = require('../validation/validationMiddlewares');
 
 const {
   getProductsByQueryContorller,
   addUserProductController,
+  removeUserProductController,
 } = require('../controllers/productsController');
 router.get(
   '/',
@@ -24,6 +26,13 @@ router.post(
   authGuard,
   validateCreateUserProduct,
   asyncWrapper(addUserProductController),
+);
+
+router.delete(
+  '/:productId',
+  authGuard,
+  validateObjectId,
+  asyncWrapper(removeUserProductController),
 );
 
 module.exports = router;

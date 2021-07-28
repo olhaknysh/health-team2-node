@@ -1,22 +1,36 @@
 const { statusCode } = require('../helpers/constants');
-
 const { getProductsByQuery } = require('../services/productsService');
 
-const { addUserProduct } = require('../services/userProductsService');
+const {
+  addUserProduct,
+  removeUserProductById,
+} = require('../services/userProductsService');
 
 const getProductsByQueryContorller = async (req, res) => {
   const { query } = req;
   const products = await getProductsByQuery(query);
 
-  res.status(statusCode.OK).json({ ...products });
+  res.status(statusCode.OK).json(products);
 };
 
 const addUserProductController = async (req, res) => {
   const userId = req.user._id;
   const { body } = req;
   const result = await addUserProduct(userId, body);
-  res.json({
-    result,
-  });
+  res.status(statusCode.CREATED).json(result);
 };
-module.exports = { getProductsByQueryContorller, addUserProductController };
+
+const removeUserProductController = async (req, res) => {
+  const userId = req.user._id;
+  const { productId } = req.params;
+  const result = await removeUserProductById(userId, productId);
+  res
+    .status(statusCode.OK)
+    .json({ message: 'product deleted', totalCalories: result.totalCalories });
+};
+
+module.exports = {
+  getProductsByQueryContorller,
+  addUserProductController,
+  removeUserProductController,
+};
