@@ -4,6 +4,7 @@ const { getProductsByQuery } = require('../services/productsService');
 const {
   addUserProduct,
   removeUserProductById,
+  getUserProductsDailyInfo,
 } = require('../services/userProductsService');
 
 const getProductsByQueryContorller = async (req, res) => {
@@ -29,8 +30,16 @@ const removeUserProductController = async (req, res) => {
     .json({ message: 'product deleted', totalCalories: result.totalCalories });
 };
 
+const getUserProductsDailyInfoController = async (req, res) => {
+  const userId = req.user._id;
+  const { date } = req.params;
+  const result = await getUserProductsDailyInfo(userId, date);
+  res.status(statusCode.OK).json(result);
+};
+
 module.exports = {
   getProductsByQueryContorller,
   addUserProductController,
   removeUserProductController,
+  getUserProductsDailyInfoController,
 };

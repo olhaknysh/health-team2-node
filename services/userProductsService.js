@@ -2,11 +2,19 @@ const { UserProduct } = require('../model/userProductsModel');
 const { statusCode } = require('../helpers/constants');
 const { CustomError } = require('../helpers/errors');
 const { getProductByTitle } = require('../services/productsService');
+const { getDailyCalories } = require('../services/usersService');
 
 const calcUserProductCalories = async (weight, title) => {
   const product = await getProductByTitle(title);
   const productCalories = (product.calories / 100) * weight;
   return productCalories;
+};
+
+const calcDailyRateParameters = async (userId, totalCalories) => {
+  const dailyCalories = await getDailyCalories(userId);
+  const leftCalories = dailyCalories - totalCalories;
+  const dailyNormalProcent = Math.round((totalCalories / dailyCalories) * 100);
+  return { leftCalories, dailyNormalProcent };
 };
 
 const getUserProductByProductId = async (userId, productId) => {
@@ -40,11 +48,17 @@ const addUserProduct = async (userId, body) => {
   let totalCalories = userProduct ? userProduct.totalCalories : 0;
   const productCalories = await calcUserProductCalories(weight, title);
   totalCalories += productCalories;
+  const { leftCalories, dailyNormalProcent } = await calcDailyRateParameters(
+    userId,
+    totalCalories,
+  );
   const result = await UserProduct.findOneAndUpdate(
     { date, userId },
     {
       totalCalories,
-      $addToSet: { products: [{ title, weight }] },
+      leftCalories,
+      dailyNormalProcent,
+      $addToSet: { products: [{ title, weight, calories: productCalories }] },
     },
     { new: true, upsert: true },
   );
@@ -59,10 +73,12 @@ const removeUserProductById = async (userId, productId) => {
     userId,
     productId,
   );
-
   const productCalories = await calcUserProductCalories(weight, title);
-
   totalCalories -= productCalories;
+  const { leftCalories, dailyNormalProcent } = await calcDailyRateParameters(
+    userId,
+    totalCalories,
+  );
 
   const result = await UserProduct.findOneAndUpdate(
     {
@@ -71,6 +87,8 @@ const removeUserProductById = async (userId, productId) => {
     },
     {
       totalCalories,
+      leftCalories,
+      dailyNormalProcent,
       $pull: { products: { _id: productId } },
     },
     { new: true },
@@ -81,7 +99,16 @@ const removeUserProductById = async (userId, productId) => {
   return result;
 };
 
+const getUserProductsDailyInfo = async (userId, date) => {
+  const result = await await UserProduct.findOne({ date, userId }).populate({
+    path: 'userId',
+    select: ' name dailyCalories notAllowedProducts -_id',
+  });
+  return result;
+};
+
 module.exports = {
   addUserProduct,
   removeUserProductById,
+  getUserProductsDailyInfo,
 };

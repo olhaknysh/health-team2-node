@@ -53,10 +53,19 @@ const addUserInfo = async (userId, body) => {
 const updateToken = async (userId, token) =>
   await User.findByIdAndUpdate(userId, { token }, { new: true });
 
+const getDailyCalories = async userId => {
+  const { dailyCalories } = await User.findById(
+    { _id: userId },
+    { dailyCalories: 1, _id: 0 },
+  );
+  return dailyCalories;
+};
+
 module.exports = {
   getUserById,
   getUserByLogin,
   createUser,
   updateToken,
   addUserInfo,
+  getDailyCalories,
 };

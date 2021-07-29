@@ -6,8 +6,8 @@ const calcDailyCalories = (age, height, currentWeight, desireWeight) => {
     5 * age -
     161 -
     10 * (currentWeight - desireWeight);
-
-  return dailyCalories;
+  const result = Math.round(dailyCalories);
+  return result;
 };
 
 const getNotAllowedCategoriesProducts = async groupBloode => {

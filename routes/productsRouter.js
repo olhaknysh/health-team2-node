@@ -8,19 +8,30 @@ const {
   validateQueryProduct,
   validateCreateUserProduct,
   validateObjectId,
+  validateGetUserProductsDailyInfo,
 } = require('../validation/validationMiddlewares');
 
 const {
   getProductsByQueryContorller,
   addUserProductController,
   removeUserProductController,
+  getUserProductsDailyInfoController,
 } = require('../controllers/productsController');
+
 router.get(
   '/',
   authGuard,
   validateQueryProduct,
   asyncWrapper(getProductsByQueryContorller),
 );
+
+router.get(
+  '/:date',
+  authGuard,
+  validateGetUserProductsDailyInfo,
+  asyncWrapper(getUserProductsDailyInfoController),
+);
+
 router.post(
   '/',
   authGuard,
