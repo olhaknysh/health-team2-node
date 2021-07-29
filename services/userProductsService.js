@@ -104,6 +104,12 @@ const getUserProductsDailyInfo = async (userId, date) => {
     path: 'userId',
     select: ' name dailyCalories notAllowedProducts -_id',
   });
+  if (!result) {
+    throw new CustomError(
+      statusCode.BAD_REQUEST,
+      'No allowed information for this date',
+    );
+  }
   return result;
 };
 
