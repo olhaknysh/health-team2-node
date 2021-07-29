@@ -36,7 +36,7 @@ const getProductsByQuery = async query => {
 
   if (products.length === 0 && page) {
     throw new CustomError(
-      statusCode.UNPROCESSABLE_ENTITY,
+      statusCode.BAD_REQUEST,
       'No allowed products found for this query',
     );
   }
