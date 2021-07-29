@@ -1,0 +1,966 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "version": "1.0.0",
+        "title": "Health API",
+        "description": "Showing off Health API",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "servers": [
+        {
+            "url": "http://localhost:3000/api"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authorization endpoints"
+        },
+        {
+            "name": "Products",
+            "description": "Products endpoints"
+        }
+    ],
+    "paths": {
+        "/users/signup": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User registration",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Registration's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegistrationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegistrationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    },
+                    "409": {
+                        "description": "Login in use",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User`s authorization",
+                "parameters": [],
+                "requestBody": {
+                    "description": "Authorization's object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorizationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthorizationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/users/calories/": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Count not authorisized users`s calories",
+                "parameters": [],
+                "requestBody": {
+                    "description": "User`s calories count body",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CaloriesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CaloriesPublicResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/users/{userId}/calories": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Count authorisized users`s calories",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "User`s id",
+                        "name": "userId"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "User`s calories count body",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CaloriesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CaloriesPrivateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Recount authorisized users`s calories",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "User`s id",
+                        "name": "userId"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "User`s calories recount body",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CaloriesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CaloriesPrivateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User`s logout",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User is successfully logged out",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get products on query",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "description": "Name of product",
+                        "name": "search"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Missing search query or no products found",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Add product to current day",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "requestBody": {
+                    "description": "Add product",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddProductRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - missing fields or validation error",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete product to current day",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Product`s id",
+                        "name": "productId"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteProductResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
+        "/products/{date}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get products by date",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Date in format dd-mm-yyyy",
+                        "name": "date"
+                    }
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetProductByDateResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id",
+                        "content": {}
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RegistrationRequest": {
+                "type": "object",
+                "required": [
+                    "login",
+                    "password",
+                    "name"
+                ],
+                "properties": {
+                    "login": {
+                        "type": "string",
+                        "description": "User's login",
+                        "example": "Awesome nickname"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User's name",
+                        "example": "Oleg"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "qwerty123"
+                    },
+                    "dailyCalories": {
+                        "type": "integer",
+                        "description": "User's counted calories for 1 day",
+                        "example": "1550"
+                    },
+                    "notAllowedProducts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "User's not allowed products",
+                            "example": "зерновые"
+                        }
+                    }
+                }
+            },
+            "RegistrationResponse": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "User's name",
+                                "example": "Oleg"
+                            },
+                            "login": {
+                                "type": "string",
+                                "description": "User's login",
+                                "example": "Awesome nickname"
+                            }
+                        }
+                    }
+                },
+                "example": {
+                    "user": {
+                        "name": "Vasya",
+                        "login": "Cool Vasya Nickname"
+                    }
+                }
+            },
+            "AuthorizationRequest": {
+                "type": "object",
+                "required": [
+                    "login",
+                    "password"
+                ],
+                "properties": {
+                    "login": {
+                        "type": "string",
+                        "description": "User's name",
+                        "example": "Oleg"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "Oleg123"
+                    }
+                }
+            },
+            "AuthorizationResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "User`s token",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDI4NWRmZGZkNGU0MTMyMDIyY2ZhOSIsImlhdCI6MTYyNzU1ODQxOCwiZXhwIjoxNjI3NTY1NjE4fQ.Q0m6VG3YeGHEMJA56OsDz_N6bx2kquZhGPsLovl8EYw"
+                    },
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "description": "User`s id",
+                                "example": "610285dfdfd4e4132022cfa9"
+                            },
+                            "login": {
+                                "type": "string",
+                                "description": "User's login",
+                                "example": "Awesome nickname"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "User's name",
+                                "example": "Oleg"
+                            },
+                            "dailyCalories": {
+                                "type": "integer",
+                                "description": "User's counted calories for 1 day",
+                                "example": "1550"
+                            },
+                            "notAllowedProducts": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "description": "User's not allowed products",
+                                    "example": "зерновые"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "CaloriesRequest": {
+                "type": "object",
+                "required": [
+                    "age",
+                    "height",
+                    "currentWeight",
+                    "desireWeight",
+                    "groupBlood"
+                ],
+                "properties": {
+                    "age": {
+                        "type": "integer",
+                        "description": "User`s age",
+                        "example": 25
+                    },
+                    "height": {
+                        "type": "integer",
+                        "description": "User`s height",
+                        "example": 170
+                    },
+                    "currentWeight": {
+                        "type": "integer",
+                        "description": "User`s current weight",
+                        "example": 85
+                    },
+                    "desireWeight": {
+                        "type": "integer",
+                        "description": "User`s desired weight",
+                        "example": 65
+                    },
+                    "groupBlood": {
+                        "type": "integer",
+                        "description": "User`s group of blood",
+                        "example": 1
+                    }
+                }
+            },
+            "CaloriesPublicResponse": {
+                "type": "object",
+                "properties": {
+                    "dailyCalories": {
+                        "type": "number",
+                        "description": "User's counted daily calories",
+                        "example": 1397
+                    },
+                    "notAllowedProducts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "User's not allowed products",
+                            "example": "мучные"
+                        }
+                    }
+                },
+                "example": {
+                    "dailyCalories": 1497,
+                    "notAllowedProducts": [
+                        "зерновые",
+                        "мучные",
+                        "масла и жиры",
+                        "орехи",
+                        "овощи и зелень"
+                    ]
+                }
+            },
+            "CaloriesPrivateResponse": {
+                "type": "object",
+                "properties": {
+                    "userName": {
+                        "type": "string",
+                        "description": "User`s name",
+                        "example": "Awesome Oleg"
+                    },
+                    "userInfo": {
+                        "type": "object",
+                        "properties": {
+                            "age": {
+                                "type": "integer",
+                                "description": "User`s age",
+                                "example": 25
+                            },
+                            "height": {
+                                "type": "integer",
+                                "description": "User`s height",
+                                "example": 170
+                            },
+                            "currentWeight": {
+                                "type": "integer",
+                                "description": "User`s current weight",
+                                "example": 85
+                            },
+                            "desireWeight": {
+                                "type": "integer",
+                                "description": "User`s desired weight",
+                                "example": 65
+                            },
+                            "groupBlood": {
+                                "type": "integer",
+                                "description": "User`s group of blood",
+                                "example": 1
+                            }
+                        }
+                    },
+                    "dailyCalories": {
+                        "type": "number",
+                        "description": "User's counted daily calories",
+                        "example": 1397
+                    },
+                    "notAllowedProducts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "User's not allowed products",
+                            "example": "мучные"
+                        }
+                    }
+                },
+                "example": {
+                    "userName": "vasya30",
+                    "userInfo": {
+                        "age": 30,
+                        "height": 180,
+                        "currentWeight": 90,
+                        "desireWeight": 80,
+                        "groupBlood": 3
+                    },
+                    "dailyCalories": 1297,
+                    "notAllowedProducts": [
+                        "зерновые",
+                        "мучные",
+                        "масла и жиры",
+                        "орехи",
+                        "овощи и зелень"
+                    ]
+                }
+            },
+            "ProductResponse": {
+                "type": "object",
+                "properties": {
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "categories": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "Category of selected product",
+                                        "example": "овощи и зелень"
+                                    }
+                                },
+                                "weight": {
+                                    "type": "number",
+                                    "description": "Weight for given calories",
+                                    "example": 100
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "description": "Unique id of product",
+                                    "example": "5d51694902b2373622ff5cd8"
+                                },
+                                "title": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ru": {
+                                            "type": "string",
+                                            "description": "Russian name of product",
+                                            "example": "Баклажанная икра консервированная"
+                                        },
+                                        "ua": {
+                                            "type": "string",
+                                            "description": "Ukrainian name of product",
+                                            "example": "Баклажанна ікра консервована"
+                                        }
+                                    }
+                                },
+                                "calories": {
+                                    "type": "number",
+                                    "description": "Calories for 100g",
+                                    "example": 148
+                                }
+                            }
+                        }
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "Number of matching products found",
+                        "example": 7
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Limit of products for 1 page",
+                        "example": 5
+                    },
+                    "page": {
+                        "type": "integer",
+                        "description": "Number of current page",
+                        "example": 1
+                    }
+                }
+            },
+            "AddProductRequest": {
+                "type": "object",
+                "required": [
+                    "date",
+                    "title",
+                    "weight"
+                ],
+                "properties": {
+                    "date": {
+                        "type": "string",
+                        "description": "Today`s date in format 'dd-mm-yyyy'",
+                        "example": "29-07-2021"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Exact title of product",
+                        "example": "Баклажан консервированный"
+                    },
+                    "weight": {
+                        "type": "integer",
+                        "description": "Weight of product",
+                        "example": 250
+                    }
+                }
+            },
+            "AddProductResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Unique id of product",
+                        "example": "5d51694902b2373622ff5cd8"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "Date of eaten product",
+                        "example": "29-07-2021"
+                    },
+                    "userId": {
+                        "type": "string",
+                        "description": "User`s id",
+                        "example": "610285dfdfd4e4132022cfa9"
+                    },
+                    "dailyNormalProcent": {
+                        "type": "number",
+                        "description": "Procent of counted calories for day",
+                        "example": 8
+                    },
+                    "leftCalories": {
+                        "type": "number",
+                        "description": "Left calories",
+                        "example": 1404.5
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "weight": {
+                                    "type": "number",
+                                    "description": "Eaten weight",
+                                    "example": 250
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "description": "Unique id of product",
+                                    "example": "5d51694902b2373622ff5cd8"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "Russian name of product",
+                                    "example": "Баклажанная икра консервированная"
+                                },
+                                "calories": {
+                                    "type": "number",
+                                    "description": "Calories for current weight",
+                                    "example": 122.5
+                                }
+                            }
+                        },
+                        "totalCalories": {
+                            "type": "number",
+                            "description": "Calories eaten for current day",
+                            "example": 465.8
+                        }
+                    }
+                }
+            },
+            "DeleteProductResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "description": "Message",
+                        "example": "product deleted"
+                    },
+                    "totalCalories": {
+                        "type": "number",
+                        "description": "Recounted calories eaten for current day",
+                        "example": 465.8
+                    }
+                }
+            },
+            "GetProductByDateResponse": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "description": "Id for object of date",
+                        "example": "6102c27e91c36086cba507a0"
+                    },
+                    "date": {
+                        "type": "string",
+                        "description": "Date in format dd-mm-yyyy",
+                        "example": "29-07-2021"
+                    },
+                    "userId": {
+                        "type": "object",
+                        "properties": {
+                            "notAllowedProducts": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "description": "User's not allowed products",
+                                    "example": "зерновые"
+                                }
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "User`s name",
+                                "example": "Oleg"
+                            },
+                            "dailyCalories": {
+                                "type": "number",
+                                "description": "User's counted calories for 1 day",
+                                "example": "1550"
+                            }
+                        }
+                    },
+                    "dailyNormalProcent": {
+                        "type": "number",
+                        "description": "Procent of counted calories for day",
+                        "example": 8
+                    },
+                    "leftCalories": {
+                        "type": "number",
+                        "description": "Left calories",
+                        "example": 1404.5
+                    },
+                    "products": {
+                        "type": "object",
+                        "properties": {
+                            "weight": {
+                                "type": "number",
+                                "description": "Eaten weight",
+                                "example": 250
+                            },
+                            "_id": {
+                                "type": "string",
+                                "description": "Unique id of product",
+                                "example": "5d51694902b2373622ff5cd8"
+                            },
+                            "title": {
+                                "type": "string",
+                                "description": "Russian name of product",
+                                "example": "Баклажанная икра консервированная"
+                            },
+                            "calories": {
+                                "type": "number",
+                                "description": "Calories for current weight",
+                                "example": 122.5
+                            }
+                        }
+                    },
+                    "totalCalories": {
+                        "type": "number",
+                        "description": "Calories eaten for current day",
+                        "example": 465.8
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
