@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const dbUri = `${process.env.MONGO_URI}`;
 
-const db = mongoose.connect(dbUri, {
+const db = mongoose.connect(`${dbUri}`, {
   useUnifiedTopology: true,
   useCreateIndex: true,
   useNewUrlParser: true,
