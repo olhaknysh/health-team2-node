@@ -17,7 +17,7 @@
     ],
     "servers": [
         {
-            "url": "http://localhost:3000/api"
+            "url": "https://slim-mom-app.herokuapp.com/api"
         }
     ],
     "tags": [
@@ -66,6 +66,10 @@
                     },
                     "409": {
                         "description": "Login in use",
+                        "content": {}
+                    },
+                    "429": {
+                        "description": "Too many accounts created from this IP, please try again after an hour",
                         "content": {}
                     }
                 }

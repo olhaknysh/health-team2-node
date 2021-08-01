@@ -9,6 +9,8 @@ const {
   validateGetUserInfo,
 } = require('../validation/validationMiddlewares');
 
+const { createAccountLimiter } = require('../helpers/rateLimitHelpers');
+
 const { asyncWrapper } = require('../helpers/apiHelpers');
 
 const {
@@ -19,7 +21,12 @@ const {
   dailyCaloriesPrivateController,
 } = require('../controllers/usersController');
 
-router.post('/signup', validateCreateUser, asyncWrapper(signupUserController));
+router.post(
+  '/signup',
+  validateCreateUser,
+  createAccountLimiter,
+  asyncWrapper(signupUserController),
+);
 router.post('/login', validateLoginUser, asyncWrapper(loginUserController));
 router.post('/logout', authGuard, asyncWrapper(logoutUserController));
 
