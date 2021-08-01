@@ -67,6 +67,10 @@
                     "409": {
                         "description": "Login in use",
                         "content": {}
+                    },
+                    "429": {
+                        "description": "Too many accounts created from this IP, please try again after an hour",
+                        "content": {}
                     }
                 }
             }
