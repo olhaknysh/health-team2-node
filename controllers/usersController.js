@@ -61,14 +61,12 @@ const dailyCaloriesPublicController = async (req, res) => {
 const getCurrentUserController = async (req, res) => {
   const currentUser = req.user;
   res.status(statusCode.OK).json({
-    user: {
-      id: currentUser._id,
-      name: currentUser.name,
-      login: currentUser.login,
-      userInfo: currentUser.userInfo,
-      dailyCalories: currentUser.dailyCalories,
-      notAllowedProducts: currentUser.notAllowedProducts,
-    },
+    id: currentUser._id,
+    name: currentUser.name,
+    login: currentUser.login,
+    userInfo: currentUser.userInfo,
+    dailyCalories: currentUser.dailyCalories,
+    notAllowedProducts: currentUser.notAllowedProducts,
   });
 };
 
