@@ -58,6 +58,13 @@ const dailyCaloriesPublicController = async (req, res) => {
   });
 };
 
+const getCurrentUserController = async (req, res) => {
+  const { user } = req;
+  res.status(statusCode.OK).json({
+    user,
+  });
+};
+
 const dailyCaloriesPrivateController = async (req, res) => {
   const userId = req.user._id;
   const updatedUser = await addUserInfo(userId, req.body);
@@ -75,4 +82,5 @@ module.exports = {
   logoutUserController,
   dailyCaloriesPublicController,
   dailyCaloriesPrivateController,
+  getCurrentUserController,
 };
