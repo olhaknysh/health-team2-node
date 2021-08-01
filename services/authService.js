@@ -12,7 +12,7 @@ const signup = async body => {
     body;
   const user = await getUserByLogin(login);
   if (user) {
-    throw new CustomError(statusCode.CONFLICT, 'Email in use');
+    throw new CustomError(statusCode.CONFLICT, 'Login in use');
   }
   const newUser = await createUser(
     name,
