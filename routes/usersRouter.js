@@ -17,9 +17,12 @@ const {
   signupUserController,
   loginUserController,
   logoutUserController,
+  getCurrentUserController,
   dailyCaloriesPublicController,
   dailyCaloriesPrivateController,
 } = require('../controllers/usersController');
+
+router.get('/current', authGuard, asyncWrapper(getCurrentUserController));
 
 router.post(
   '/signup',
