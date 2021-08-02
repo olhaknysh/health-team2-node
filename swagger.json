@@ -31,6 +31,36 @@
         }
     ],
     "paths": {
+        "/users/current": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get information about current user",
+                "parameters": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCurrentUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {}
+                    }
+                }
+            }
+        },
         "/users/signup": {
             "post": {
                 "tags": [
@@ -324,7 +354,7 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "Add product to current day",
+                "summary": "Add product to selected day",
                 "parameters": [],
                 "security": [
                     {
@@ -367,7 +397,7 @@
                 "tags": [
                     "Products"
                 ],
-                "summary": "Delete product to current day",
+                "summary": "Delete product to selected day",
                 "parameters": [
                     {
                         "in": "path",
@@ -955,6 +985,69 @@
                         "type": "number",
                         "description": "Calories eaten for current day",
                         "example": 465.8
+                    }
+                }
+            },
+            "GetCurrentUserResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "User`s unique id",
+                        "example": "6101bb987e057619a047b14c"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User's name",
+                        "example": "Oleg"
+                    },
+                    "login": {
+                        "type": "string",
+                        "description": "User's login",
+                        "example": "Awesome nickname"
+                    },
+                    "userInfo": {
+                        "type": "object",
+                        "properties": {
+                            "age": {
+                                "type": "integer",
+                                "description": "User`s age",
+                                "example": 25
+                            },
+                            "height": {
+                                "type": "integer",
+                                "description": "User`s height",
+                                "example": 170
+                            },
+                            "currentWeight": {
+                                "type": "integer",
+                                "description": "User`s current weight",
+                                "example": 85
+                            },
+                            "desireWeight": {
+                                "type": "integer",
+                                "description": "User`s desired weight",
+                                "example": 65
+                            },
+                            "groupBlood": {
+                                "type": "integer",
+                                "description": "User`s group of blood",
+                                "example": 1
+                            }
+                        }
+                    },
+                    "dailyCalories": {
+                        "type": "integer",
+                        "description": "User's counted calories for 1 day",
+                        "example": "1550"
+                    },
+                    "notAllowedProducts": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "User's not allowed products",
+                            "example": "зерновые"
+                        }
                     }
                 }
             }
