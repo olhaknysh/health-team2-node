@@ -6,13 +6,13 @@ const { getDailyCalories } = require('../services/usersService');
 
 const calcUserProductCalories = async (weight, title) => {
   const product = await getProductByTitle(title);
-  const productCalories = (product.calories / 100) * weight;
+  const productCalories = Math.round((product.calories / 100) * weight);
   return productCalories;
 };
 
 const calcDailyRateParameters = async (userId, totalCalories) => {
   const dailyCalories = await getDailyCalories(userId);
-  const leftCalories = dailyCalories - totalCalories;
+  const leftCalories = Math.round(dailyCalories - totalCalories);
   const dailyNormalProcent = Math.round((totalCalories / dailyCalories) * 100);
   return { leftCalories, dailyNormalProcent };
 };
@@ -65,7 +65,14 @@ const addUserProduct = async (userId, body) => {
   if (!result) {
     throw new CustomError(statusCode.NOT_FOUND, 'Not found');
   }
-  return result;
+  const { products } = result;
+  const product = products.find(({ title }) => title === body.title);
+  return {
+    product,
+    totalCalories,
+    leftCalories,
+    dailyNormalProcent,
+  };
 };
 
 const removeUserProductById = async (userId, productId) => {
