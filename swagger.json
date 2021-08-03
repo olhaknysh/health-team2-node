@@ -850,7 +850,7 @@
                         "description": "Calories eaten for current day",
                         "example": 465.8
                     },
-                    "products": {
+                    "product": {
                         "type": "array",
                         "items": {
                             "type": "object",
