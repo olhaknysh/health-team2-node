@@ -17,8 +17,8 @@ const getProductsByQueryContorller = async (req, res) => {
 const addUserProductController = async (req, res) => {
   const userId = req.user._id;
   const { body } = req;
-  const addedProduct = await addUserProduct(userId, body);
-  res.status(statusCode.CREATED).json(addedProduct);
+  const result = await addUserProduct(userId, body);
+  res.status(statusCode.CREATED).json(result);
 };
 
 const removeUserProductController = async (req, res) => {
