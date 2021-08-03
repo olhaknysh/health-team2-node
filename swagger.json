@@ -393,7 +393,7 @@
                     }
                 }
             },
-            "delete": {
+            "delete/{productId}": {
                 "tags": [
                     "Products"
                 ],
@@ -835,21 +835,6 @@
             "AddProductResponse": {
                 "type": "object",
                 "properties": {
-                    "_id": {
-                        "type": "string",
-                        "description": "Unique id of product",
-                        "example": "5d51694902b2373622ff5cd8"
-                    },
-                    "date": {
-                        "type": "string",
-                        "description": "Date of eaten product",
-                        "example": "29-07-2021"
-                    },
-                    "userId": {
-                        "type": "string",
-                        "description": "User`s id",
-                        "example": "610285dfdfd4e4132022cfa9"
-                    },
                     "dailyNormalProcent": {
                         "type": "number",
                         "description": "Procent of counted calories for day",
@@ -859,6 +844,11 @@
                         "type": "number",
                         "description": "Left calories",
                         "example": 1404.5
+                    },
+                    "totalCalories": {
+                        "type": "number",
+                        "description": "Calories eaten for current day",
+                        "example": 465.8
                     },
                     "products": {
                         "type": "array",
@@ -886,11 +876,6 @@
                                     "example": 122.5
                                 }
                             }
-                        },
-                        "totalCalories": {
-                            "type": "number",
-                            "description": "Calories eaten for current day",
-                            "example": 465.8
                         }
                     }
                 }
