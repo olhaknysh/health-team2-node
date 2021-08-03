@@ -22,12 +22,14 @@ const addUserProductController = async (req, res) => {
 };
 
 const removeUserProductController = async (req, res) => {
-  const userId = req.user._id;
-  const { productId } = req.params;
-  const result = await removeUserProductById(userId, productId);
-  res
-    .status(statusCode.OK)
-    .json({ message: 'product deleted', totalCalories: result.totalCalories });
+
+    const userId = req.user._id;
+    const { productId } = req.params;
+    const result = await removeUserProductById(userId, productId);
+    const { dailyNormalProcent, leftCalories, totalCalories } = result;
+    res
+        .status(statusCode.OK)
+        .json({ dailyNormalProcent, leftCalories, totalCalories });
 };
 
 const getUserProductsDailyInfoController = async (req, res) => {
