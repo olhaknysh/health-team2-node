@@ -65,9 +65,9 @@ const addUserProduct = async (userId, body) => {
   if (!result) {
     throw new CustomError(statusCode.NOT_FOUND, 'Not found');
   }
-  const { products } = result;
-  const addedProduct = products.find(({ title }) => title === body.title);
-  return addedProduct;
+  // const { products } = result;
+  // const addedProduct = products.find(({ title }) => title === body.title);
+  return result;
 };
 
 const removeUserProductById = async (userId, productId) => {
