@@ -883,15 +883,20 @@
             "DeleteProductResponse": {
                 "type": "object",
                 "properties": {
-                    "message": {
-                        "type": "string",
-                        "description": "Message",
-                        "example": "product deleted"
-                    },
                     "totalCalories": {
                         "type": "number",
                         "description": "Recounted calories eaten for current day",
                         "example": 465.8
+                    },
+                    "dailyNormalProcent": {
+                        "type": "number",
+                        "description": "Procent of counted calories for day",
+                        "example": 8
+                    },
+                    "leftCalories": {
+                        "type": "number",
+                        "description": "Left calories",
+                        "example": 1404.5
                     }
                 }
             },
