@@ -1,5 +1,8 @@
 /* eslint-disable no-useless-catch */
 const { User } = require('../model/userModel');
+const { statusCode } = require('../helpers/constants');
+const { CustomError } = require('../helpers/errors');
+
 const {
   getNotAllowedCategoriesProducts,
   calcDailyCalories,
@@ -58,6 +61,9 @@ const getDailyCalories = async userId => {
     { _id: userId },
     { dailyCalories: 1, _id: 0 },
   );
+  if (!dailyCalories) {
+    throw new CustomError(statusCode.FORBIDDEN, 'Please, count your daily rate first');
+  }
   return dailyCalories;
 };
 
