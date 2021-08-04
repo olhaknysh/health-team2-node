@@ -390,6 +390,10 @@
                     "401": {
                         "description": "Unauthorized",
                         "content": {}
+                    },
+                    "403": {
+                        "description": "Please, count your daily rate first",
+                        "content": {}
                     }
                 }
             },
@@ -429,6 +433,10 @@
                     },
                     "401": {
                         "description": "Unauthorized",
+                        "content": {}
+                    },
+                    "403": {
+                        "description": "Please, count your daily rate first",
                         "content": {}
                     }
                 }
