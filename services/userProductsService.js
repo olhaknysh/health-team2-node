@@ -65,14 +65,8 @@ const addUserProduct = async (userId, body) => {
   if (!result) {
     throw new CustomError(statusCode.NOT_FOUND, 'Not found');
   }
-  const { products } = result;
-  const product = products.find(({ title }) => title === body.title);
-  return {
-    product,
-    totalCalories,
-    leftCalories,
-    dailyNormalProcent,
-  };
+
+  return result;
 };
 
 const removeUserProductById = async (userId, productId) => {
