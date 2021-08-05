@@ -3,7 +3,7 @@ const { statusCode } = require('../helpers/constants');
 const { CustomError } = require('../helpers/errors');
 const { getProductByTitle } = require('../services/productsService');
 const { getDailyCalories } = require('../services/usersService');
-
+const { getInitialDate } = require('../helpers/dateHelpers');
 const calcUserProductCalories = async (weight, title) => {
   const product = await getProductByTitle(title);
   const productCalories = Math.round((product.calories / 100) * weight);
@@ -107,11 +107,12 @@ const removeUserProductById = async (userId, productId) => {
 };
 
 const getUserProductsDailyInfo = async (userId, date) => {
+  const currentDate = getInitialDate();
   const result = await await UserProduct.findOne({ date, userId }).populate({
     path: 'userId',
     select: ' name dailyCalories notAllowedProducts -_id',
   });
-  if (!result) {
+  if (!result && date !== currentDate) {
     throw new CustomError(
       statusCode.BAD_REQUEST,
       'No allowed information for this date',
