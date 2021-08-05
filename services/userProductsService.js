@@ -108,11 +108,24 @@ const removeUserProductById = async (userId, productId) => {
 
 const getUserProductsDailyInfo = async (userId, date) => {
   const currentDate = getInitialDate();
-  const result = await await UserProduct.findOne({ date, userId }).populate({
+  const totalCalories = 0;
+  const { leftCalories } = await calcDailyRateParameters(userId, totalCalories);
+  let result = null;
+  if (date === currentDate && !result) {
+    await UserProduct.create({
+      date,
+      products: [],
+      totalCalories,
+      leftCalories,
+      dailyNormalProcent: 0,
+      userId,
+    });
+  }
+  result = await UserProduct.findOne({ date, userId }).populate({
     path: 'userId',
     select: ' name dailyCalories notAllowedProducts -_id',
   });
-  if (date !== currentDate || !result) {
+  if (!result) {
     throw new CustomError(
       statusCode.BAD_REQUEST,
       'No allowed information for this date',
