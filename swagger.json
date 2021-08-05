@@ -396,8 +396,10 @@
                         "content": {}
                     }
                 }
-            },
-            "delete/{productId}": {
+            }
+        },
+        "products/{productId}": {
+            "delete": {
                 "tags": [
                     "Products"
                 ],
@@ -858,7 +860,7 @@
                         "description": "Calories eaten for current day",
                         "example": 465.8
                     },
-                    "product": {
+                    "products": {
                         "type": "array",
                         "items": {
                             "type": "object",
